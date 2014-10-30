@@ -15,6 +15,7 @@ import org.apache.tajo.engine.function.annotation.ParamTypes;
 import org.apache.tajo.storage.Tuple;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -73,8 +74,8 @@ public class RandomLottery extends AggFunction<Datum> {
         LOG.debug(">>> size: "+ size);
         if(size>0) {
             Random random = new Random(System.nanoTime());
-            int ptr = random.nextInt(size);
-            lotteryContext.res = lotteryContext.list.get(ptr);
+            Collections.shuffle(lotteryContext.list, random);
+            lotteryContext.res = lotteryContext.list.get(0);
         }
         LOG.info(">>> getPartialResult:res: "+ lotteryContext.res);
         return DatumFactory.createText(lotteryContext.res);
